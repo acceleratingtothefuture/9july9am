@@ -228,12 +228,18 @@ $('#narcYear').oninput=e=>{
 //stops scrolling from being too bad 
 document.querySelectorAll('.link-btn').forEach(link => {
   link.addEventListener('click', function(e) {
-    e.preventDefault(); // Prevent default anchor behavior
+    e.preventDefault();
+
     const targetId = this.getAttribute('href').slice(1);
     const targetElement = document.getElementById(targetId);
-    const yOffset = -100; // Offset upwards by 20px
+
+    const yOffset = isNavHidden() ? 20 : -100; // Use smaller offset if nav is hidden
     const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
     window.scrollTo({ top: y, behavior: 'smooth' });
   });
 });
+
+function isNavHidden() {
+  return window.matchMedia("(max-height: 500px) and (min-aspect-ratio: 5/3)").matches;
+}
